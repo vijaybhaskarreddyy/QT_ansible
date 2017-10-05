@@ -1,0 +1,11 @@
+---
+# tasks file for deploy
+- name: deploy app wars
+  copy:
+    src: "{{ item }}"
+    dest: /var/lib/tomcat7/webapps/ 
+    mode: 0644
+  with_fileglob:
+    - files/*
+  notify:
+    - restart tomcat

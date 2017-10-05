@@ -1,0 +1,27 @@
+---
+# tasks file for tomcat7
+- name: update packages
+  apt:
+    update_cache: yes
+- name: installing tomcat7
+  apt:
+    name: "{{ item }}"
+    state: present 
+  with_items:
+    - tomcat7
+    - tomcat7-docs 
+    - tomcat7-admin 
+    - tomcat7-examples
+- name: Java heap memory increasing
+  template:
+    src: templates/tomcat7.j2
+    dest: /etc/default/tomcat7
+  notify:
+    - restart tomcat
+
+- name: Configure Tomcat Web Management Interface
+  template:
+    src: templates/tomcat-users.xml.j2
+    dest: /etc/tomcat7/tomcat-users.xml
+  notify:
+    - restart tomcat
